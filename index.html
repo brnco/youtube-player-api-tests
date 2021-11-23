@@ -1,10 +1,18 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<style>
+		#playercontain{
+			position:absolute;
+			border:1px solid blue;
+		}
+	</style>
 	</head>
 	<body>
-	hello world!
-	<div id="player"></div>
+		<div id="playercontain">
+			<div id="player"></div>
+		</div>
 	</body>
 	<script>
 		//list of vids
@@ -13,6 +21,7 @@
 			'wp43OdtAAkM',
 			'pllRW9wETzw'
 			];
+		vidlist_index = 1;
 		//load API
 		var tag = document.createElement('script');
 		tag.src = "https://www.youtube.com/iframe_api";
@@ -20,9 +29,7 @@
 		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 		//load iframe and youtube content
 		var player;
-		var vidlist_index = 1;
 		function onYouTubeIframeAPIReady(){
-			vid_from_list = vidlist[Math.floor(Math.random()*vidlist.length)];
 			player = new YT.Player('player', {
 				height:390,
 				width:640,
@@ -38,6 +45,9 @@
 		}
 		//function for YT API to call when ready
 		function onPlayerReady(event){
+			player_location_top = Math.floor(Math.random()*200);
+			player_location_left = Math.floor(Math.random()*200);
+			$("#playercontain").css({"top":player_location_top, "left":player_location_left});
 			event.target.playVideo();
 		}
 		//function for YT API to call when state changes
@@ -52,6 +62,11 @@
 				console.log("vid ended");
 				player.loadPlaylist(vidlist,vidlist_index);
 				vidlist_index++;
+				player_location_top = Math.floor(Math.random()*200);
+				player_location_left = Math.floor(Math.random()*200);
+				$("#playercontain").css({"top":player_location_top, "left":player_location_left});
+				console.log(player_location_top);
+				console.log(player_location_left);
 			}
 		}
 		function stopVideo(){
