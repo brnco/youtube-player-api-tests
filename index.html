@@ -7,6 +7,12 @@
 	<div id="player"></div>
 	</body>
 	<script>
+		//list of vids
+		let vidlist = [
+			'Fk-4lXLM34g',
+			'wp43OdtAAkM',
+			'pllRW9wETzw'
+			];
 		//load API
 		var tag = document.createElement('script');
 		tag.src = "https://www.youtube.com/iframe_api";
@@ -14,11 +20,13 @@
 		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 		//load iframe and youtube content
 		var player;
+		var vidlist_index = 1;
 		function onYouTubeIframeAPIReady(){
+			vid_from_list = vidlist[Math.floor(Math.random()*vidlist.length)];
 			player = new YT.Player('player', {
 				height:390,
 				width:640,
-				videoId:'Fk-4lXLM34g',
+				videoId:vidlist[0],
 				playerVars: {
 					'playsinline': 1
 				},
@@ -35,9 +43,15 @@
 		//function for YT API to call when state changes
 		var done = false;
 		function onPlayerStateChange(event){
-			if (event.data == YT.PlayerState.PLAYING && !done){
-				setTimeout(stopVideo, 6000);
-				done = true;
+			/*if (event.data == YT.PlayerState.ENDED && done){
+				console.log("vid ended");
+				player.loadPlaylist(vidlist,ctr);
+				ctr++;
+			}*/
+			if (event.data === 0){
+				console.log("vid ended");
+				player.loadPlaylist(vidlist,vidlist_index);
+				vidlist_index++;
 			}
 		}
 		function stopVideo(){
